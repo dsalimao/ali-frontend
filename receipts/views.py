@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Receipts
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 def index(request):
     latest_receipts_list = Receipts.objects.order_by('-receipts_date')[:5]
@@ -13,11 +15,14 @@ def index(request):
 def pickup(request):
     return render(request, 'receipts/pickup.html')
 
+@csrf_exempt
 def pickup_endpoint(request):
     try:
-        raw_content = request.POST['raw_content']
-    except:
+        received_json_data=json.loads(request.body.decode('utf-8'))
+        raw_content = received_json_data['raw_content']
+    except Exception as e:
         # TODO: handle error
+        print(e)
         pass
     else:
         # TODO: process raw content

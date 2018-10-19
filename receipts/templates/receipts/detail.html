@@ -1,4 +1,6 @@
 <h1>{{ receipts.receipts_name }}</h1>
+<h2>{{ receipts.receipts_date }}</h2>
+<p> {{ receipts.raw_content }} </p>
 <ul>
     {% for item in receipts.item_set.all %}
     <li>{{ item.item_name }} + {{ item.item_price }}</li>

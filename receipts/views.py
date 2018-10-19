@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import Receipts
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
+from .processors.pickup import on_pickup
 import json
 
 def index(request):
@@ -20,13 +21,14 @@ def pickup_endpoint(request):
     try:
         received_json_data=json.loads(request.body.decode('utf-8'))
         raw_content = received_json_data['raw_content']
+        name = received_json_data['name']
     except Exception as e:
         # TODO: handle error
         print(e)
         pass
     else:
         # TODO: process raw content
-        print(raw_content)
+        on_pickup(name, raw_content)
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.

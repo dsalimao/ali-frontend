@@ -1,0 +1,6 @@
+<h1>{{ receipts.receipts_name }}</h1>
+<ul>
+    {% for item in receipts.item_set.all %}
+    <li>{{ item.item_name }} + {{ item.item_price }}</li>
+    {% endfor %}
+</ul>

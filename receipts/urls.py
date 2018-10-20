@@ -1,5 +1,5 @@
 from django.urls import path
-
+from .onstart import on_startup
 from . import views
 
 app_name = 'receipts'
@@ -16,3 +16,5 @@ urlpatterns = [
     # ex: /receipts/
     path('', views.index, name='index'),
 ]
+
+on_startup()

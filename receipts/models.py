@@ -5,6 +5,7 @@ class Receipts(models.Model):
     receipts_date = models.DateTimeField('Purchased Date')
     total_price = models.IntegerField(default=0)
     raw_content = models.CharField(max_length=50000000)
+    processed = models.BooleanField(default=False)
 
 
 class Item(models.Model):

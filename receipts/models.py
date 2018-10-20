@@ -9,5 +9,7 @@ class Receipts(models.Model):
 
 
 class Item(models.Model):
-    item_name = models.ForeignKey(Receipts, on_delete=models.CASCADE)
+    receipts = models.ForeignKey(Receipts, on_delete=models.CASCADE)
+    item_name = models.CharField(max_length=5000)
+    item_quantity = models.IntegerField(default=1)
     item_price = models.IntegerField(default=0)

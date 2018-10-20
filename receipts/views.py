@@ -18,22 +18,33 @@ def pickup(request):
 
 @csrf_exempt
 def pickup_endpoint(request):
-    try:
+    def parse_json():
         received_json_data=json.loads(request.body.decode('utf-8'))
-        raw_content = received_json_data['raw_content']
+        raw = received_json_data['raw_content']
         name = received_json_data['name']
-        rdate = datetime.now()
-        r = Receipts(receipts_name=name, receipts_date=rdate, raw_content=raw_content)
-        r.save()
-    except Exception as e:
-        # TODO: handle error
-        print(e)
-        pass
-    else:
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-        return HttpResponseRedirect(reverse('receipts:pickup'))
+        return name, raw
+
+    def parse_form():
+        raw = request.POST['raw_content']
+        name = request.POST['name']
+        return name, raw
+
+    try:
+        name, raw = parse_json()
+    except Exception as e1:
+        try:
+            name, raw = parse_form()
+        except Exception as e2:
+            print(e1)
+            print(e2)
+
+    rdate = datetime.now()
+    r = Receipts(receipts_name=name, receipts_date=rdate, raw_content=raw)
+    r.save()
+    # Always return an HttpResponseRedirect after successfully dealing
+    # with POST data. This prevents data from being posted twice if a
+    # user hits the Back button.
+    return HttpResponseRedirect(reverse('receipts:pickup'))
 
 def detail(request, receipts_id):
     receipts = get_object_or_404(Receipts, pk=receipts_id)

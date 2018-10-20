@@ -17,7 +17,7 @@ def process_raw_content():
 
 def fetch_all_unprocessed():
     while(True):
-        unprocessed = Receipts.objects.all(processed=False)
+        unprocessed = Receipts.objects.filter(processed=False)
         for r in unprocessed:
             queue.put_nowait(r)
         time.sleep(10)

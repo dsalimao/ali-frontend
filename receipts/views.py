@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from .models import Receipts
+from .models import Receipts, Item
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from _datetime import datetime
@@ -62,17 +62,28 @@ def search_receipts(request):
 
     receipts_list = Receipts.objects.order_by('-receipts_date')[page_start:page_start + page_size]
     data_s = json.loads(serialize('json', receipts_list, fields=('receipts_name', 'receipts_date', 'total_price')))
-    print(data_s[0]['fields'])
-    data = list(map(lambda x: x['fields'],data_s))
+
+    def to_json_line(r):
+        j = r['fields']
+        j['id'] = r['pk']
+        return j
+
+    data = list(map(to_json_line,data_s))
     return JsonResponse({'payload': data})
 
 
+def get_detail(request, receipts_id):
+    items = Item.objects.filter(receipts_id=receipts_id)
+    data_s = json.loads(serialize('json', items))
 
+    def to_json_line(i):
+            j = i['fields']
+            j['id'] = i['pk']
+            return j
 
+    data = list(map(to_json_line,data_s))
+    return JsonResponse({'payload': data})
 
-def detail(request, receipts_id):
-    receipts = get_object_or_404(Receipts, pk=receipts_id)
-    return render(request, 'receipts/detail.html', {'receipts': receipts})
 
 def raw(request, receipts_id):
     response = "You're looking at the raw content of receipts %s."

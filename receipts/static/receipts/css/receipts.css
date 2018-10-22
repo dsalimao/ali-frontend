@@ -7,6 +7,7 @@
 #receipts-list td, #receipts-list th {
     border: 1px solid #ddd;
     padding: 8px;
+    min-width: 100px;
 }
 
 #receipts-list tr:nth-child(even){background-color: #f2f2f2;}
@@ -19,4 +20,32 @@
     text-align: left;
     background-color: rgb(46,125,50);
     color: white;
+}
+
+#detail-list {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#detail-list td, #detail-list th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    min-width: 100px;
+}
+
+#detail-list tr:nth-child(even){background-color: #f2f2f2;}
+
+#detail-list tr:hover {background-color: #ddd;}
+
+#detail-list th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #259b24;
+    color: white;
+}
+
+.receipts-line-active {
+    background-color: #cddc39 !important;
 }

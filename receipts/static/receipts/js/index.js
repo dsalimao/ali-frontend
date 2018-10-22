@@ -24,9 +24,7 @@ function ($scope, $q, $http) {
     var parameter = JSON.stringify({});
     $http.post('/receipts/search_receipts', parameter).
     then(function(data) {
-        console.log(data.data);
         $scope.latestReceipts = data.data.payload;
-        console.log($scope.latestReceipts);
       },function(err) {
         console.log(err);
       });
@@ -37,5 +35,15 @@ function ($scope, $q, $http) {
 
     $scope.getCost = function(cost) {
         return '$'+(cost/100).toString();
+    };
+
+    $scope.getDetailData = function(id) {
+        console.log($scope.selected);
+        $http.get('/receipts/get_detail/' + id).
+            then(function(data) {
+                $scope.details = data.data.payload;
+              },function(err) {
+                console.log(err);
+              });
     };
 }]);

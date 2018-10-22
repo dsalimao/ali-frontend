@@ -1,0 +1,31 @@
+<!--{% if latest_receipts_list %}-->
+<!--{% load static %}-->
+<!--<img src="{% static 'receipts/w.jpg' %}">-->
+<!--<ul>-->
+    <!--{% for receipts in latest_receipts_list %}-->
+    <!--<li><a href="{% url 'receipts:detail' receipts.id %}">{{ receipts.receipts_name }}</a></li>-->
+    <!--{% endfor %}-->
+<!--</ul>-->
+<!--{% else %}-->
+<!--<p>No receipts are available.</p>-->
+<!--{% endif %}-->
+
+
+{% load i18n %}
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <base href="/receipts">
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.20/angular-ui-router.js"></script>
+    <!--<script type="text/javascript" src="//cdn.jsdelivr.net/restangular/latest/restangular.js"></script>-->
+
+</head>
+<body>
+<img src="{% static 'receipts/img/w.jpg' %}">
+<div class="container content" ng-app="ReceiptsApp">
+    <div ui-view >Loading...</div>
+    <div ui-sref="index">ssss</div>
+</div>
+<script src="{% static 'receipts/js/index.js' %}"></script>
+</body>

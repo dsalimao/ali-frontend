@@ -1,9 +1,0 @@
-{% if latest_receipts_list %}
-<ul>
-    {% for receipts in latest_receipts_list %}
-    <li><a href="{% url 'receipts:detail' receipts.id %}">{{ receipts.receipts_name }}</a></li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>No receipts are available.</p>
-{% endif %}

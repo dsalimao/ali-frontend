@@ -11,7 +11,7 @@ def index(request):
     context = {
         'latest_receipts_list': latest_receipts_list,
     }
-    return render(request, 'receipts/index.html', context)
+    return render(request, 'receipts/receipts.html', context)
 
 def pickup(request):
     return render(request, 'receipts/pickup.html')
@@ -45,6 +45,7 @@ def pickup_endpoint(request):
     # with POST data. This prevents data from being posted twice if a
     # user hits the Back button.
     return HttpResponseRedirect(reverse('receipts:pickup'))
+
 
 def detail(request, receipts_id):
     receipts = get_object_or_404(Receipts, pk=receipts_id)

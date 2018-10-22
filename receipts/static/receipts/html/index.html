@@ -1,0 +1,35 @@
+<!--{% if latest_receipts_list %}-->
+<!--{% load static %}-->
+<!--<img src="{% static 'receipts/w.jpg' %}">-->
+<!--<ul>-->
+<!--{% for receipts in latest_receipts_list %}-->
+<!--<li><a href="{% url 'receipts:detail' receipts.id %}">{{ receipts.receipts_name }}</a></li>-->
+<!--{% endfor %}-->
+<!--</ul>-->
+<!--{% else %}-->
+<!--<p>No receipts are available.</p>-->
+<!--{% endif %}-->
+
+<md-content laout="column" flex>
+    <md-table-container>
+        <table md-table ng-model="selected">
+            <thead md-head>
+            <tr md-row>
+                <th md-column><span>Store</span></th>
+                <th md-column><span>Time</span></th>
+                <th md-column><span>Total Cost</span></th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row md-select="guest" ng-repeat="receipts in latestReceipts">
+                <td md-cell>{{receipts.store}}</td>
+                <td md-cell>{{receipts.time}}</td>
+                <td md-cell>{{receipts.totalCost}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+
+    <!--<md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{guests.count}}" md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks" md-on-paginate="logPagination"></md-table-pagination>-->
+    <!--</md-card>-->
+</md-content>

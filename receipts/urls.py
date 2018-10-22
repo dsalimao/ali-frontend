@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from .onstart import on_startup
 from . import views
 
@@ -14,7 +14,7 @@ urlpatterns = [
     # ex: /receipts/5/raw/
     path('<int:receipts_id>/results/', views.raw, name='raw'),
     # ex: /receipts/
-    path('', views.index, name='index'),
+    re_path(r'^', views.index, name='index'),
 ]
 
 on_startup()

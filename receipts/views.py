@@ -1,9 +1,11 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from .models import Receipts
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from _datetime import datetime
+from django.core.serializers import serialize
+
 import json
 
 def index(request):
@@ -45,6 +47,27 @@ def pickup_endpoint(request):
     # with POST data. This prevents data from being posted twice if a
     # user hits the Back button.
     return HttpResponseRedirect(reverse('receipts:pickup'))
+
+
+def search_receipts(request):
+    """
+    Searches all receipts. This is a POST method, accept JSON data only.
+    """
+    received_json_data=json.loads(request.body.decode('utf-8'))
+
+    order_by = received_json_data['order_by'] if 'order_by' in received_json_data else '-receipts_date'
+    page_start = received_json_data['page_start'] if 'page_start' in received_json_data else 0
+    page_size = received_json_data['page_size'] if 'page_size' in received_json_data else 10
+    # TODO: support search text
+
+    receipts_list = Receipts.objects.order_by('-receipts_date')[page_start:page_start + page_size]
+    data_s = json.loads(serialize('json', receipts_list, fields=('receipts_name', 'receipts_date', 'total_price')))
+    print(data_s[0]['fields'])
+    data = list(map(lambda x: x['fields'],data_s))
+    return JsonResponse({'payload': data})
+
+
+
 
 
 def detail(request, receipts_id):

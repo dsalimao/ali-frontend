@@ -1,9 +1,14 @@
 var app = angular.module('ReceiptsApp', [
   'ui.router',
+  'ngMaterial',
 ]);
 
-app.config(function ($stateProvider, $locationProvider) {
+app.config(function($stateProvider, $locationProvider, $httpProvider, $mdThemingProvider) {
     $locationProvider.html5Mode(true);
+    $mdThemingProvider.theme('aliTheme')
+        .primaryPalette('green');
+    $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+    $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
     $stateProvider
       .state('index', {
           url: "/receipts/",
@@ -12,8 +17,17 @@ app.config(function ($stateProvider, $locationProvider) {
       });
 });
 
-app.controller("ReceiptsIndexCtrl", ['$scope', '$q',
-function ($scope, $q) {
-    var a = {store: 'a', time: 'b', totalCost:'c'};
-    $scope.latestReceipts = [a,a,a,a];
+app.controller("ReceiptsIndexCtrl", ['$scope', '$q', '$http',
+function ($scope, $q, $http) {
+    $scope.latestReceipts = [];
+
+    var parameter = JSON.stringify({});
+    $http.post('/receipts/search_receipts', parameter).
+    then(function(data) {
+        console.log(data.data);
+        $scope.latestReceipts = data.data.payload;
+        console.log($scope.latestReceipts);
+      },function(err) {
+        console.log(err);
+      });
 }]);

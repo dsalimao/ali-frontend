@@ -9,6 +9,8 @@ urlpatterns = [
     path('pickup', views.pickup, name='pickup'),
     # ex: /receipts/pickup/endpoint/
     path('pickup/endpoint', views.pickup_endpoint, name='pickup_endpoint'),
+    # ex: /receipts/search
+    path('search_receipts', views.search_receipts, name='search_receipts'),
     # ex: /receipts/5/
     path('<int:receipts_id>/', views.detail, name='detail'),
     # ex: /receipts/5/raw/

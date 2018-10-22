@@ -1,16 +1,3 @@
-<!--{% if latest_receipts_list %}-->
-<!--{% load static %}-->
-<!--<img src="{% static 'receipts/w.jpg' %}">-->
-<!--<ul>-->
-    <!--{% for receipts in latest_receipts_list %}-->
-    <!--<li><a href="{% url 'receipts:detail' receipts.id %}">{{ receipts.receipts_name }}</a></li>-->
-    <!--{% endfor %}-->
-<!--</ul>-->
-<!--{% else %}-->
-<!--<p>No receipts are available.</p>-->
-<!--{% endif %}-->
-
-
 {% load i18n %}
 {% load static %}
 {% csrf_token %}
@@ -24,23 +11,24 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.20/angular-ui-router.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+    <link rel="stylesheet" href="{% static 'receipts/css/receipts.css' %}"/>
     <!--<script type="text/javascript" src="//cdn.jsdelivr.net/restangular/latest/restangular.js"></script>-->
 
 </head>
 <body ng-app="ReceiptsApp" md-theme="aliTheme">
-<md-content>
-    <md-toolbar class="md-hue-2">
-        <div class="md-toolbar-tools">
-            <md-button class="md-icon-button" aria-label="Menu">
-                <md-icon md-svg-icon="{% static 'receipts/icon/menu.svg' %}"></md-icon>
-            </md-button>
+    <md-content>
+        <md-toolbar class="md-hue-2">
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" aria-label="Menu">
+                    <md-icon md-svg-icon="{% static 'receipts/icon/menu.svg' %}"></md-icon>
+                </md-button>
 
-            <h2 flex md-truncate>Receipts App</h2>
-        </div>
-    </md-toolbar>
-</md-content>
-<div class="container content">
-    <div ui-view >Loading...</div>
-</div>
-<script src="{% static 'receipts/js/index.js' %}"></script>
+                <h2 flex md-truncate>Receipts App</h2>
+            </div>
+        </md-toolbar>
+    </md-content>
+    <div class="container content">
+        <div ui-view >Loading...</div>
+    </div>
+    <script src="{% static 'receipts/js/index.js' %}"></script>
 </body>

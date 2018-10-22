@@ -30,4 +30,12 @@ function ($scope, $q, $http) {
       },function(err) {
         console.log(err);
       });
+
+    $scope.getDate = function(time) {
+        return time.substring(0, time.indexOf('T'));
+    };
+
+    $scope.getCost = function(cost) {
+        return '$'+(cost/100).toString();
+    };
 }]);

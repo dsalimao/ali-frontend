@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from _datetime import datetime
 from django.core.serializers import serialize
+import dateutil.parser
 
 import json
 
@@ -54,14 +55,21 @@ def search_receipts(request):
     Searches all receipts. This is a POST method, accept JSON data only.
     """
     received_json_data=json.loads(request.body.decode('utf-8'))
+    print(received_json_data)
+
+    filter_p = {}
+    if 'name' in received_json_data:
+        filter_p['receipts_name__startswith']=received_json_data['name']
+    if 'from' in received_json_data:
+        filter_p['receipts_date__gt']=received_json_data['from']
+    if 'to' in received_json_data:
+        filter_p['receipts_date__lt']=received_json_data['to']
 
     order_by = received_json_data['order_by'] if 'order_by' in received_json_data else '-receipts_date'
     page_start = received_json_data['page_start'] if 'page_start' in received_json_data else 0
     page_size = received_json_data['page_size'] if 'page_size' in received_json_data else 10
-    if 'name' in received_json_data:
-        receipts_list = Receipts.objects.filter(receipts_name__startswith=received_json_data['name']).order_by(order_by)[page_start:page_start + page_size]
-    else:
-        receipts_list = Receipts.objects.order_by('-receipts_date')[page_start:page_start + page_size]
+
+    receipts_list = Receipts.objects.filter(**filter_p).order_by('-receipts_date')[page_start:page_start + page_size]
     data_s = json.loads(serialize('json', receipts_list, fields=('receipts_name', 'receipts_date', 'total_price')))
 
     def to_json_line(r):

@@ -23,7 +23,12 @@ function ($scope, $q, $http) {
     $scope.searchText = '';
 
     $scope.searchReceipts = function() {
-        var parameter = JSON.stringify({name: $scope.searchText});
+        var tod1 = new Date();
+        if ($scope.toDate) {
+            tod1 = new Date($scope.toDate.getTime());
+            tod1.setDate($scope.toDate.getDate() + 1);
+        }
+        var parameter = JSON.stringify({name: $scope.searchText, from: $scope.fromDate, to: tod1});
         $http.post('/receipts/search_receipts', parameter).
             then(function(data) {
                 $scope.latestReceipts = data.data.payload;

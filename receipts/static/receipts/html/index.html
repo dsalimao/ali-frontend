@@ -1,10 +1,20 @@
 <div layout="column" layout-align="center center">
-    <md-input-container>
-        <label>Store</label>
-        <input md-maxlength="100" md-no-asterisk name="Store" ng-model="searchText"
-               ng-model-options="{debounce:1000}"
-               ng-change="searchReceipts()">
-    </md-input-container>
+    <div layout="row" layout-align="center center">
+        <md-input-container>
+            <label>Store</label>
+            <input md-maxlength="100" md-no-asterisk name="Store" ng-model="searchText"
+                   ng-model-options="{debounce:1000}"
+                   ng-change="searchReceipts()">
+        </md-input-container>
+        <md-input-container>
+            <md-datepicker ng-model="fromDate" md-placeholder="From Date" ng-change="searchReceipts()">
+            </md-datepicker>
+        </md-input-container>
+        <md-input-container>
+            <md-datepicker ng-model="toDate" md-placeholder="To Date" ng-change="searchReceipts()">
+            </md-datepicker>
+        </md-input-container>
+    </div>
     <div layout="row" layout-align="center start">
         <md-table-container ng-model="selected" flex>
             <table md-table id="receipts-list">

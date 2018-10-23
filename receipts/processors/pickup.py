@@ -15,7 +15,25 @@ def process_raw_content():
         uber(r)
     elif r.receipts_name.lower() == 'hmart':
         hmart(r)
+    elif r.receipts_name.lower() == 'shell':
+        shell(r)
     queue.task_done()
+
+def shell(r):
+    def to_price_int(x):
+        return int(float(x.string.replace("$","")) * 100)
+
+    soup = BeautifulSoup(r.raw_content)
+
+    tds = soup.find_all(['td'])
+    for i in range(len(tds)):
+        if tds[i].string == 'TOTAL':
+            p = to_price_int(tds[i+1].string)
+            r.processed = True
+            r.total_price = p
+            update_processed_receipts(r, [1], ["Shell Fuel"], [p])
+            break
+
 
 
 def uber(r):
@@ -23,7 +41,6 @@ def uber(r):
         return int(float(x.string.replace("$","")) * 100)
 
     soup = BeautifulSoup(r.raw_content)
-    # TODO: move specific path to a better place
     total_price = soup.table.tr.td.table.tr.td.table.tr.td.table.tr.td.table.tr.td.table.tr.td.table.tr.td.table.tr.td.\
         table.div.span.string
 

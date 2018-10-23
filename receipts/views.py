@@ -5,7 +5,6 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from _datetime import datetime
 from django.core.serializers import serialize
-import dateutil.parser
 
 import json
 
@@ -94,6 +93,6 @@ def get_detail(request, receipts_id):
     return JsonResponse({'payload': data})
 
 
-def raw(request, receipts_id):
-    response = "You're looking at the raw content of receipts %s."
-    return HttpResponse(response % receipts_id)
+def get_raw(request, receipts_id):
+    receipts = Receipts.objects.get(pk=receipts_id)
+    return JsonResponse({'payload': receipts.raw_content})

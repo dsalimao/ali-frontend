@@ -1,6 +1,7 @@
 {% load i18n %}
 {% load static %}
 {% csrf_token %}
+{% load cache_bust %}
 <head>
     <meta charset="utf-8">
     <base href="/receipts">
@@ -11,7 +12,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.20/angular-ui-router.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
-    <link rel="stylesheet" href="{% static 'receipts/css/receipts.css' %}"/>
+    <link rel="stylesheet" href="{% static 'receipts/css/receipts.css' %}?{% cache_bust %}"/>
     <!--<script type="text/javascript" src="//cdn.jsdelivr.net/restangular/latest/restangular.js"></script>-->
 
 </head>
@@ -30,5 +31,5 @@
     <div class="container content">
         <div ui-view >Loading...</div>
     </div>
-    <script src="{% static 'receipts/js/index.js' %}"></script>
+    <script src="{% static 'receipts/js/index.js' %}?{% cache_bust %}"></script>
 </body>

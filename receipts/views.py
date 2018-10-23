@@ -58,9 +58,10 @@ def search_receipts(request):
     order_by = received_json_data['order_by'] if 'order_by' in received_json_data else '-receipts_date'
     page_start = received_json_data['page_start'] if 'page_start' in received_json_data else 0
     page_size = received_json_data['page_size'] if 'page_size' in received_json_data else 10
-    # TODO: support search text
-
-    receipts_list = Receipts.objects.order_by('-receipts_date')[page_start:page_start + page_size]
+    if 'name' in received_json_data:
+        receipts_list = Receipts.objects.filter(receipts_name__startswith=received_json_data['name']).order_by(order_by)[page_start:page_start + page_size]
+    else:
+        receipts_list = Receipts.objects.order_by('-receipts_date')[page_start:page_start + page_size]
     data_s = json.loads(serialize('json', receipts_list, fields=('receipts_name', 'receipts_date', 'total_price')))
 
     def to_json_line(r):

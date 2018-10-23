@@ -1,7 +1,9 @@
 <div layout="column" layout-align="center center">
-    <md-input-container class="">
-        <label>Search Text</label>
-        <input md-maxlength="100" md-no-asterisk name="Search Text..." ng-model="searchText">
+    <md-input-container>
+        <label>Store</label>
+        <input md-maxlength="100" md-no-asterisk name="Store" ng-model="searchText"
+               ng-model-options="{debounce:1000}"
+               ng-change="searchReceipts()">
     </md-input-container>
     <div layout="row" layout-align="center start">
         <md-table-container ng-model="selected" flex>

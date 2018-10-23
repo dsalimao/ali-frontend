@@ -20,14 +20,18 @@ app.config(function($stateProvider, $locationProvider, $httpProvider, $mdTheming
 app.controller("ReceiptsIndexCtrl", ['$scope', '$q', '$http',
 function ($scope, $q, $http) {
     $scope.latestReceipts = [];
+    $scope.searchText = '';
 
-    var parameter = JSON.stringify({});
-    $http.post('/receipts/search_receipts', parameter).
-    then(function(data) {
-        $scope.latestReceipts = data.data.payload;
-      },function(err) {
-        console.log(err);
-      });
+    $scope.searchReceipts = function() {
+        var parameter = JSON.stringify({name: $scope.searchText});
+        $http.post('/receipts/search_receipts', parameter).
+            then(function(data) {
+                $scope.latestReceipts = data.data.payload;
+                $scope.details = [];
+              },function(err) {
+                console.log(err);
+              });
+    };
 
     $scope.getDate = function(time) {
         return time.substring(0, time.indexOf('T'));
@@ -46,4 +50,6 @@ function ($scope, $q, $http) {
                 console.log(err);
               });
     };
+
+    $scope.searchReceipts();
 }]);

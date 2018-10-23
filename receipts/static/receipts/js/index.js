@@ -47,10 +47,15 @@ function ($scope, $q, $http) {
     };
 
     $scope.getDetailData = function(id) {
-        console.log($scope.selected);
         $http.get('/receipts/get_detail/' + id).
             then(function(data) {
                 $scope.details = data.data.payload;
+              },function(err) {
+                console.log(err);
+              });
+        $http.get('/receipts/get_raw/' + id).
+            then(function(data) {
+                console.log(data.data.payload);
               },function(err) {
                 console.log(err);
               });

@@ -22,36 +22,39 @@ app.controller("ReceiptsIndexCtrl", ['$scope', '$q', '$http', '$window',
 function ($scope, $q, $http, $window) {
     $scope.latestReceipts = [];
     $scope.searchText = '';
+    $scope.authed = false;
 
-    $scope.auth = function() {
-            var PROJECT_ID = '864443634019';
-                 var CLIENT_ID = '864443634019-hlqr4tvv33alp9i8t4ig7h1tf6bajl2l.apps.googleusercontent.com';
-                 var API_KEY = 'AIzaSyCtPNydDlJTSOwXloDSW4ZMYpiqNcQJ8yc';
-                 var SCOPES = 'https://www.googleapis.com/auth/gmail.readonly';
-                   $window.gapi.client.setApiKey(API_KEY);
-                   $window.gapi.auth.authorize({
-                     client_id: CLIENT_ID,
-                     scope: SCOPES,
-                     immediate: false
-                   }, function(authResult) {
-                        var token = authResult['access_token'];
-                        if (authResult && !authResult.error) {
-                        $window.gapi.client.load('gmail', 'v1', function() {
-                            var request =
-                            $window.gapi.client.gmail.users.messages.list(
-                            {userId: 'me', q: 'from:support@udacity.com'});
-                            request.execute(function(response) {
-                                console.log(response);
-                            },function(err) {console.log(err);});
-                        });
-                          window.alert('Auth was successful!');
-                        } else {
-                          window.alert('Auth was not successful');
-                        }
-                      }
-                   );
+    $scope.initGmailDataFetching = function() {
+         var PROJECT_ID = '864443634019';
+         var CLIENT_ID = '864443634019-hlqr4tvv33alp9i8t4ig7h1tf6bajl2l.apps.googleusercontent.com';
+         var API_KEY = 'AIzaSyCtPNydDlJTSOwXloDSW4ZMYpiqNcQJ8yc';
+         var SCOPES = 'https://www.googleapis.com/auth/gmail.readonly';
+           $window.gapi.client.setApiKey(API_KEY);
+           $window.gapi.auth.authorize({
+             client_id: CLIENT_ID,
+             scope: SCOPES,
+             immediate: false
+           }, function(authResult) {
+                var token = authResult['access_token'];
+                if (authResult && !authResult.error) {
+                    $scope.listGmail()
+                } else {
+                  console.log('Auth was not successful');
+                }
+              }
+           );
+    };
 
-        };
+    $scope.listGmail = function() {
+        $window.gapi.client.load('gmail', 'v1', function() {
+            var request =
+            $window.gapi.client.gmail.users.messages.list(
+            {userId: 'me', q: 'from:support@udacity.com'});
+            request.execute(function(response) {
+                console.log(response);
+            },function(err) {console.log(err);});
+        });
+    }
 
     $scope.searchReceipts = function() {
         var tod1 = new Date();
@@ -89,7 +92,6 @@ function ($scope, $q, $http, $window) {
               },function(err) {
                 console.log(err);
               });
-              $scope.auth();
     };
 
     $scope.searchReceipts();

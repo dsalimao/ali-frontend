@@ -23,10 +23,6 @@ function ($scope, $q, $http, $window) {
     $scope.latestReceipts = [];
     $scope.searchText = '';
 
-//    $window.initGapi = function() {
-//    console.log(1111111);
-//        gapiService.initGapi($scope.auth);
-//      }
     $scope.auth = function() {
             var PROJECT_ID = '864443634019';
                  var CLIENT_ID = '864443634019-hlqr4tvv33alp9i8t4ig7h1tf6bajl2l.apps.googleusercontent.com';
@@ -46,9 +42,7 @@ function ($scope, $q, $http, $window) {
                             {userId: 'me', q: 'from:support@udacity.com'});
                             request.execute(function(response) {
                                 console.log(response);
-                            },function(err) {
-                                                                           console.log(err);
-                                                                         });
+                            },function(err) {console.log(err);});
                         });
                           window.alert('Auth was successful!');
                         } else {
@@ -73,7 +67,6 @@ function ($scope, $q, $http, $window) {
               },function(err) {
                 console.log(err);
               });
-//
     };
 
     $scope.getDate = function(time) {
@@ -100,6 +93,4 @@ function ($scope, $q, $http, $window) {
     };
 
     $scope.searchReceipts();
-
-
 }]);

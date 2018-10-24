@@ -17,10 +17,36 @@ app.config(function($stateProvider, $locationProvider, $httpProvider, $mdTheming
       });
 });
 
-app.controller("ReceiptsIndexCtrl", ['$scope', '$q', '$http',
-function ($scope, $q, $http) {
+
+app.controller("ReceiptsIndexCtrl", ['$scope', '$q', '$http', '$window',
+function ($scope, $q, $http, $window) {
     $scope.latestReceipts = [];
     $scope.searchText = '';
+
+//    $window.initGapi = function() {
+//    console.log(1111111);
+//        gapiService.initGapi($scope.auth);
+//      }
+    $scope.auth = function() {
+            var PROJECT_ID = '864443634019';
+                 var CLIENT_ID = '864443634019-hlqr4tvv33alp9i8t4ig7h1tf6bajl2l.apps.googleusercontent.com';
+                 var API_KEY = 'AIzaSyCtPNydDlJTSOwXloDSW4ZMYpiqNcQJ8yc';
+                 var SCOPES = 'https://www.googleapis.com/auth/compute';
+                   $window.gapi.client.setApiKey(API_KEY);
+                   $window.gapi.auth.authorize({
+                     client_id: CLIENT_ID,
+                     scope: SCOPES,
+                     immediate: false
+                   }, function(authResult) {
+                        if (authResult && !authResult.error) {
+                          window.alert('Auth was successful!');
+                        } else {
+                          window.alert('Auth was not successful');
+                        }
+                      }
+                   );
+
+        };
 
     $scope.searchReceipts = function() {
         var tod1 = new Date();
@@ -36,6 +62,7 @@ function ($scope, $q, $http) {
               },function(err) {
                 console.log(err);
               });
+//
     };
 
     $scope.getDate = function(time) {
@@ -55,11 +82,13 @@ function ($scope, $q, $http) {
               });
         $http.get('/receipts/get_raw/' + id).
             then(function(data) {
-                console.log(data.data.payload);
               },function(err) {
                 console.log(err);
               });
+              $scope.auth();
     };
 
     $scope.searchReceipts();
+
+
 }]);

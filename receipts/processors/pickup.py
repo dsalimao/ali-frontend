@@ -34,8 +34,6 @@ def shell(r):
             update_processed_receipts(r, [1], ["Shell Fuel"], [p])
             break
 
-
-
 def uber(r):
     def to_price_int(x):
         return int(float(x.string.replace("$","")) * 100)

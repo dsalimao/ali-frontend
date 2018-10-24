@@ -4,6 +4,7 @@
 {% load cache_bust %}
 <head>
     <meta charset="utf-8">
+    <meta name="google-signin-client_id" content="864443634019-g2ode4789suq2rdi8on0slfjb3obe0rq.apps.googleusercontent.com">
     <base href="/receipts">
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
@@ -13,6 +14,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
     <link rel="stylesheet" href="{% static 'receipts/css/receipts.css' %}?{% cache_bust %}"/>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <!--<script type="text/javascript" src="//cdn.jsdelivr.net/restangular/latest/restangular.js"></script>-->
 
 </head>
@@ -25,6 +27,7 @@
                 </md-button>
 
                 <h2 flex md-truncate>Receipts App</h2>
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
             </div>
         </md-toolbar>
     </md-content>

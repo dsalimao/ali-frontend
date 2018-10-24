@@ -40,12 +40,16 @@ function ($scope, $q, $http, $window) {
                    }, function(authResult) {
                         var token = authResult['access_token'];
                         if (authResult && !authResult.error) {
-                        $window.gapi.client.gmail.users.messages.list({userId: 'me', q: 'from:support@udacity.com'})
-                        .then(function(data) {
-                                              console.log(data);
-                                            },function(err) {
-                                              console.log(err);
-                                            });
+                        $gapi.client.load('plus', 'v1', function() {
+                            var request =
+                            $window.gapi.client.gmail.users.messages.list(
+                            {userId: 'me', q: 'from:support@udacity.com'});
+                            request.execute(function(response) {
+                                console.log(response);
+                            },function(err) {
+                                                                           console.log(err);
+                                                                         });
+                        });
                           window.alert('Auth was successful!');
                         } else {
                           window.alert('Auth was not successful');

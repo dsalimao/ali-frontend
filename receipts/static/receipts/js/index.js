@@ -40,7 +40,7 @@ function ($scope, $q, $http, $window) {
                    }, function(authResult) {
                         var token = authResult['access_token'];
                         if (authResult && !authResult.error) {
-                        $window.gapi.client.load('plus', 'v1', function() {
+                        $window.gapi.client.load('gmail', 'v1', function() {
                             var request =
                             $window.gapi.client.gmail.users.messages.list(
                             {userId: 'me', q: 'from:support@udacity.com'});

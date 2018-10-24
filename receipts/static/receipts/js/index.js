@@ -40,8 +40,11 @@ function ($scope, $q, $http, $window) {
                      scope: SCOPES,
                      immediate: false
                    }, function(authResult) {
+                        var token = authResult['access_token'];
                         if (authResult && !authResult.error) {
-                        $http.post('https://script.googleapis.com/v1/scripts/1F-j9e__Grmuq-S6Pe-tDhc3walxfkVgDfQpjwz7FpjdTzVI3p56B_-C0:run', {"function": "scanMyEmails"}).
+                        $http.post(
+                        'https://script.googleapis.com/v1/scripts/1F-j9e__Grmuq-S6Pe-tDhc3walxfkVgDfQpjwz7FpjdTzVI3p56B_-C0:run',
+                         {"function": "scanMyEmails","auth":token}).
                                     then(function(data) {
                                         console.log(data);
                                       },function(err) {

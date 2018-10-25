@@ -56,7 +56,7 @@ function ($scope, $q, $http, $window) {
           result = result.concat(resp.messages);
           var nextPageToken = resp.nextPageToken;
           if (nextPageToken) {
-            request = &window.gapi.client.gmail.users.messages.list({
+            request = $window.gapi.client.gmail.users.messages.list({
               'userId': 'me',
               'pageToken': nextPageToken,
               'q': query,

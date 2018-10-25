@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 import base64
 
-a='<td class="item-amount currency" align="right">\r\n                0.88\r\n'
+a=b'<td class="item-amount currency" align="right">\\r\\n                0.88\\r\\n'.decode('unicode_escape')
 
-print(a.encode('utf-8'))
+print(a)
 
 

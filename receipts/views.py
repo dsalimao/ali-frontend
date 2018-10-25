@@ -42,7 +42,7 @@ def pickup_endpoint(request):
             print(e2)
 
     rdate = datetime.now()
-    r = Receipts(receipts_name=name, receipts_date=rdate, raw_content=base64.urlsafe_b64decode(raw))
+    r = Receipts(receipts_name=name, receipts_date=rdate, raw_content=base64.urlsafe_b64decode(raw).decode('unicode_escape'))
     r.save()
     # Always return an HttpResponseRedirect after successfully dealing
     # with POST data. This prevents data from being posted twice if a

@@ -43,8 +43,7 @@ function ($scope, $q, $http, $window) {
                     var url1 = 'https://www.googleapis.com/plus/v1/people/me?access_token=' + authResult.access_token;
                     $http.get(url1).
                         then(function(data) {
-                            console.log(data.data);
-                            var userEmail = data.data.emails.value;
+                            var userEmail = data.data.emails[0].value;
                             $scope.syncReceipts(userEmail);
                           },function(err) {
                             console.log(err);

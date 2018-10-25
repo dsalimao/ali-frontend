@@ -52,20 +52,22 @@ function ($scope, $q, $http, $window) {
 
     $scope.listMessages = function(query, callback) {
       var getPageOfMessages = function(request, result) {
-        request.execute(function(resp) {
-          result = result.concat(resp.messages);
-          var nextPageToken = resp.nextPageToken;
-          if (nextPageToken) {
-            request = $window.gapi.client.gmail.users.messages.list({
-              'userId': 'me',
-              'pageToken': nextPageToken,
-              'q': query,
-            });
-            getPageOfMessages(request, result);
-          } else {
-            callback(result);
-          }
-        });
+        $window.gapi.client.load('gmail', 'v1', function() {
+            request.execute(function(resp) {
+                      result = result.concat(resp.messages);
+                      var nextPageToken = resp.nextPageToken;
+                      if (nextPageToken) {
+                        request = $window.gapi.client.gmail.users.messages.list({
+                          'userId': 'me',
+                          'pageToken': nextPageToken,
+                          'q': query,
+                        });
+                        getPageOfMessages(request, result);
+                      } else {
+                        callback(result);
+                      }
+                    });
+              });
       };
       var initialRequest = $window.gapi.client.gmail.users.messages.list({
         'userId': 'me',
@@ -80,8 +82,10 @@ function ($scope, $q, $http, $window) {
                 'userId': 'me',
                 'id': results[i].id,
               });
+              $window.gapi.client.load('gmail', 'v1', function() {
               request.execute(function(response) {
               console.log(response);
+              });
               });
         }
     }

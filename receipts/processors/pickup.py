@@ -11,6 +11,7 @@ queue = Queue()
 
 def process_raw_content():
     r = queue.get()
+    print(r.receipts_name)
     if r.receipts_name.lower() == 'uber':
         uber(r)
     elif r.receipts_name.lower() == 'hmart':

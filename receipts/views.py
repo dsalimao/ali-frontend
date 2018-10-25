@@ -103,7 +103,10 @@ def get_raw(request, receipts_id):
 
 
 def get_last_sync(request, user):
-    sync = SyncInfo.objects.get(user=user)
+    try:
+        sync = SyncInfo.objects.get(user=user)
+    except SyncInfo.DoesNotExist:
+        sync = None
     if sync:
         t = sync.time - timedelta(days=1)
         return JsonResponse({'payload': t.strftime("%Y/%m/%d")})

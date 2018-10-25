@@ -40,7 +40,14 @@ function ($scope, $q, $http, $window) {
            }, function(authResult) {
                 console.log(authResult);
                 if (authResult && !authResult.error) {
-                    $scope.syncReceipts();
+                    var url1 = 'https://www.googleapis.com/plus/v1/people/me?access_token=' + authResult.access_token;
+                    $http.get(url1).
+                        then(function(data) {
+                            var userEmail = data.data.emails.value;
+                            $scope.syncReceipts(userEmail);
+                          },function(err) {
+                            console.log(err);
+                          });
                 } else {
                   console.log('Auth was not successful');
                 }
@@ -48,18 +55,18 @@ function ($scope, $q, $http, $window) {
            );
     };
 
-    $scope.syncReceipts = function() {
-        $http.get('/receipts/get_last_sync/').
+    $scope.syncReceipts = function(userEmail) {
+        $http.get('/receipts/get_last_sync/' + userEmail).
             then(function(data) {
                 var query = 'from:receipts@hmart.com after:' + data.data.payload;
-                $scope.listMessages(query, $scope.getMessages)
+                $scope.listMessages(query, $scope.getMessages, userEmail)
               },function(err) {
                 console.log(err);
               });
 
     }
 
-    $scope.listMessages = function(query, callback) {
+    $scope.listMessages = function(query, callback, userEmail) {
       var getPageOfMessages = function(request, result) {
             request.execute(function(resp) {
                       result = result.concat(resp.messages);
@@ -72,7 +79,7 @@ function ($scope, $q, $http, $window) {
                         });
                         getPageOfMessages(request, result);
                       } else {
-                        callback(result);
+                        callback(result, userEmail);
                       }
                     });
       };
@@ -85,7 +92,7 @@ function ($scope, $q, $http, $window) {
       });
     };
 
-    $scope.getMessages = function(results) {
+    $scope.getMessages = function(results, userEmail) {
         for (var i=0;i<results.length;i++) {
             var request = $window.gapi.client.gmail.users.messages.get({
                 'userId': 'me',
@@ -95,7 +102,7 @@ function ($scope, $q, $http, $window) {
               request.execute(function(response) {
               var html = response.raw;
               console.log(response);
-              var parameter = JSON.stringify({name: 'HMart', raw_content: html});
+              var parameter = JSON.stringify({name: 'HMart', raw_content: html, user: userEmail});
               $http.post('/receipts/pickup/endpoint', parameter).
               then(function(data) {
                             },function(err) {

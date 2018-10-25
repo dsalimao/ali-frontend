@@ -25,25 +25,27 @@ def pickup_endpoint(request):
         received_json_data=json.loads(request.body.decode('utf-8'))
         raw = received_json_data['raw_content']
         name = received_json_data['name']
-        return name, raw
+        user = received_json_data['user']
+        return user, name, raw
 
     def parse_form():
         raw = request.POST['raw_content']
         name = request.POST['name']
-        return name, raw
+        user = request.POST['user']
+        return user, name, raw
 
     try:
-        name, raw = parse_json()
+        user, name, raw = parse_json()
     except Exception as e1:
         try:
-            name, raw = parse_form()
+            user, name, raw = parse_form()
         except Exception as e2:
             print(e1)
             print(e2)
 
     rc = base64.urlsafe_b64decode(raw).decode('unicode_escape')
     rdate = datetime.strptime(rc.split("\r\n")[2].strip(), '%a, %d %b %Y %H:%M:%S %z (%Z)')
-    r = Receipts(receipts_name=name, receipts_date=rdate, raw_content=rc)
+    r = Receipts(receipts_name=name, receipts_date=rdate, raw_content=rc, user=user)
     r.save()
     # Always return an HttpResponseRedirect after successfully dealing
     # with POST data. This prevents data from being posted twice if a

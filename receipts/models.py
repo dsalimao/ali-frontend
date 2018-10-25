@@ -8,6 +8,7 @@ class Receipts(models.Model):
     processed = models.BooleanField(default=False)
     invalid = models.BooleanField(default=False)
     fail_count = models.IntegerField(default=0)
+    user = models.CharField(max_length=200,default="unknown")
 
 
 

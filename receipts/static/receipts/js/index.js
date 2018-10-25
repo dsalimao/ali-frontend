@@ -84,7 +84,13 @@ function ($scope, $q, $http, $window) {
               });
               request.execute(function(response) {
               var html = response.payload.body.data;
-              console.log(html);
+              console.log(response);
+              var parameter = JSON.stringify({name: 'test', raw: html});
+              $http.post('/receipts/pickup/endpoint', parameter).
+              then(function(data) {
+                            },function(err) {
+                              console.log(err);
+                            });
               });
         }
     }

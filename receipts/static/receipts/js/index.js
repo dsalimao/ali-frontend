@@ -83,7 +83,7 @@ function ($scope, $q, $http, $window) {
                 'id': results[i].id,
               });
               request.execute(function(response) {
-              var html = urlSafeBase64Decode(response.payload.body.data);
+              var html = response.payload.body.data;
               console.log(html);
               });
         }

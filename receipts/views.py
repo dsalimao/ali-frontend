@@ -1,9 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from .models import Receipts, Item
+from .models import Receipts, Item, SyncInfo
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from _datetime import datetime
+from _datetime import datetime, timedelta
 from django.core.serializers import serialize
 import base64
 
@@ -68,7 +68,7 @@ def search_receipts(request):
 
     order_by = received_json_data['order_by'] if 'order_by' in received_json_data else '-receipts_date'
     page_start = received_json_data['page_start'] if 'page_start' in received_json_data else 0
-    page_size = received_json_data['page_size'] if 'page_size' in received_json_data else 100
+    page_size = received_json_data['page_size'] if 'page_size' in received_json_data else 1000000
 
     receipts_list = Receipts.objects.filter(**filter_p).order_by('-receipts_date')[page_start:page_start + page_size]
     data_s = json.loads(serialize('json', receipts_list, fields=('receipts_name', 'receipts_date', 'total_price')))
@@ -98,3 +98,23 @@ def get_detail(request, receipts_id):
 def get_raw(request, receipts_id):
     receipts = Receipts.objects.get(pk=receipts_id)
     return JsonResponse({'payload': receipts.raw_content})
+
+
+def get_last_sync(request, user):
+    sync = SyncInfo.objects.get(user=user)
+    if sync:
+        t = sync.time - timedelta(days=1)
+        return JsonResponse({'payload': t.strftime("%Y/%m/%d")})
+    return '1970/01/01'
+
+
+def update_last_sync(request):
+    def parse_json():
+        received_json_data=json.loads(request.body.decode('utf-8'))
+        user = received_json_data['user']
+        time = received_json_data['time']
+        return user, time
+
+    user, time = parse_json()
+    SyncInfo.objects.update_or_create(user=user, time=datetime.strptime(time, '%Y/%m/%d'))
+    return HttpResponseRedirect(reverse('receipts:pickup'))

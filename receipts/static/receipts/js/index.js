@@ -23,6 +23,8 @@ function ($scope, $q, $http, $window) {
     $scope.latestReceipts = [];
     $scope.searchText = '';
     $scope.authed = false;
+    $scope.pageSize = 1000000;
+    $scope.pageNow = 0;
 
     $scope.initGmailDataFetching = function() {
          var PROJECT_ID = '864443634019';
@@ -35,7 +37,7 @@ function ($scope, $q, $http, $window) {
              scope: SCOPES,
              immediate: false
            }, function(authResult) {
-                var token = authResult['access_token'];
+                console.log(authResult);
                 if (authResult && !authResult.error) {
                     $scope.syncReceipts();
                 } else {
@@ -46,8 +48,14 @@ function ($scope, $q, $http, $window) {
     };
 
     $scope.syncReceipts = function() {
-        var query = 'from:receipts@hmart.com';
-        $scope.listMessages(query, $scope.getMessages)
+        $http.get('/receipts/get_last_sync/').
+            then(function(data) {
+                var query = 'from:receipts@hmart.com after:' + data.data.payload;
+                $scope.listMessages(query, $scope.getMessages)
+              },function(err) {
+                console.log(err);
+              });
+
     }
 
     $scope.listMessages = function(query, callback) {
@@ -102,7 +110,10 @@ function ($scope, $q, $http, $window) {
             tod1 = new Date($scope.toDate.getTime());
             tod1.setDate($scope.toDate.getDate() + 1);
         }
-        var parameter = JSON.stringify({name: $scope.searchText, from: $scope.fromDate, to: tod1});
+        var parameter = JSON.stringify(
+        {name: $scope.searchText, from: $scope.fromDate, to: tod1,
+        page_size:$scope.pageSize, page_start: $scope.pageSize*$scope.pageNow}
+        );
         $http.post('/receipts/search_receipts', parameter).
             then(function(data) {
                 $scope.latestReceipts = data.data.payload;

@@ -10,8 +10,14 @@ class Receipts(models.Model):
     fail_count = models.IntegerField(default=0)
 
 
+
 class Item(models.Model):
     receipts = models.ForeignKey(Receipts, on_delete=models.CASCADE)
     item_name = models.CharField(max_length=5000)
     item_quantity = models.IntegerField(default=1)
     item_price = models.IntegerField(default=0)
+
+
+class SyncInfo(models.Model):
+    user = models.CharField(max_length=200)
+    time = models.DateTimeField('Time')

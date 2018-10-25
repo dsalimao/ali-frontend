@@ -61,9 +61,7 @@ def hmart(r):
     def to_price_int(x):
         return int(float(x.string.replace("$","")) * 100)
 
-    print(11111)
-    raw_content = r.raw_content.decode("unicode-escape")
-    print(raw_content)
+    raw_content = r.raw_content
     body = raw_content[raw_content.index("<!DOCTYPE html>"):]
     print(body)
     soup = BeautifulSoup(body)

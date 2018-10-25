@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from _datetime import datetime
 from django.core.serializers import serialize
+import base64
 
 import json
 
@@ -33,7 +34,6 @@ def pickup_endpoint(request):
 
     try:
         name, raw = parse_json()
-        print(raw)
     except Exception as e1:
         try:
             name, raw = parse_form()
@@ -41,6 +41,7 @@ def pickup_endpoint(request):
             print(e1)
             print(e2)
 
+    print(base64.urlsafe_b64decode(raw))
     rdate = datetime.now()
     # r = Receipts(receipts_name=name, receipts_date=rdate, raw_content=raw)
     # r.save()

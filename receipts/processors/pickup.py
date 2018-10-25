@@ -71,7 +71,6 @@ def hmart(r):
 
     r.processed = True
     r.total_price = total_price
-    print(total_price)
     update_processed_receipts(r, item_qtys, item_desc, item_price)
 
 

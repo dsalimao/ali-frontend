@@ -46,7 +46,7 @@ function ($scope, $q, $http, $window) {
     };
 
     $scope.syncReceipts = function() {
-        var query = 'from:support@udacity.com';
+        var query = 'from:receipts@hmart.com';
         $scope.listMessages(query, $scope.getMessages)
     }
 
@@ -83,7 +83,8 @@ function ($scope, $q, $http, $window) {
                 'id': results[i].id,
               });
               request.execute(function(response) {
-              console.log(response);
+              var html = urlSafeBase64Decode(response.payload.body.data);
+              console.log(html);
               });
         }
     }

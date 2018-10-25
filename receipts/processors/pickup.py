@@ -11,13 +11,21 @@ queue = Queue()
 
 def process_raw_content():
     r = queue.get()
-    print(r.receipts_name)
-    if r.receipts_name.lower() == 'uber':
-        uber(r)
-    elif r.receipts_name.lower() == 'hmart':
-        hmart(r)
-    elif r.receipts_name.lower() == 'shell':
-        shell(r)
+    try:
+        print(r.receipts_name)
+        if r.receipts_name.lower() == 'uber':
+            uber(r)
+        elif r.receipts_name.lower() == 'hmart':
+            hmart(r)
+        elif r.receipts_name.lower() == 'shell':
+            shell(r)
+        print('Receipts parsed')
+    except Exception as e:
+        r.fail_count += 1
+        if r.fail_count >=5:
+            r.invalid = True
+        r.save()
+        print(e)
     queue.task_done()
 
 def shell(r):
@@ -63,7 +71,6 @@ def hmart(r):
 
     raw_content = r.raw_content
     body = raw_content[raw_content.index("<!DOCTYPE html>"):]
-    print(body)
     soup = BeautifulSoup(body)
 
     # TODO: move specific path to a better place
@@ -97,10 +104,10 @@ def update_processed_receipts(receipts, item_qtys, item_desc, item_price):
 
 def fetch_all_unprocessed():
     while True:
-        unprocessed = Receipts.objects.filter(processed=False)
+        unprocessed = Receipts.objects.filter(processed=False, invalid=False)
         for r in unprocessed:
             queue.put_nowait(r)
-        time.sleep(10)
+        time.sleep(1)
 
 
 def start_pickup():

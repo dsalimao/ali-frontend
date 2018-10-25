@@ -19,4 +19,4 @@ urlpatterns = [
     re_path(r'^', views.index, name='index'),
 ]
 
-# on_startup()
+on_startup()

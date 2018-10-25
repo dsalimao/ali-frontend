@@ -10,7 +10,7 @@ import base64
 import json
 
 def index(request):
-    latest_receipts_list = Receipts.objects.order_by('-receipts_date')[:200]
+    latest_receipts_list = Receipts.objects.order_by('-receipts_date')
     context = {
         'latest_receipts_list': latest_receipts_list,
     }
@@ -41,8 +41,9 @@ def pickup_endpoint(request):
             print(e1)
             print(e2)
 
-    rdate = datetime.now()
-    r = Receipts(receipts_name=name, receipts_date=rdate, raw_content=base64.urlsafe_b64decode(raw).decode('unicode_escape'))
+    rc = base64.urlsafe_b64decode(raw).decode('unicode_escape')
+    rdate = datetime.strptime(rc.split("\r\n")[2].strip(), '%a, %d %b %Y %H:%M:%S %z (%Z)')
+    r = Receipts(receipts_name=name, receipts_date=rdate, raw_content=rc)
     r.save()
     # Always return an HttpResponseRedirect after successfully dealing
     # with POST data. This prevents data from being posted twice if a
@@ -57,7 +58,7 @@ def search_receipts(request):
     received_json_data=json.loads(request.body.decode('utf-8'))
     print(received_json_data)
 
-    filter_p = {}
+    filter_p = {'invalid': False}
     if 'name' in received_json_data:
         filter_p['receipts_name__startswith']=received_json_data['name']
     if 'from' in received_json_data:
@@ -67,7 +68,7 @@ def search_receipts(request):
 
     order_by = received_json_data['order_by'] if 'order_by' in received_json_data else '-receipts_date'
     page_start = received_json_data['page_start'] if 'page_start' in received_json_data else 0
-    page_size = received_json_data['page_size'] if 'page_size' in received_json_data else 10
+    page_size = received_json_data['page_size'] if 'page_size' in received_json_data else 100
 
     receipts_list = Receipts.objects.filter(**filter_p).order_by('-receipts_date')[page_start:page_start + page_size]
     data_s = json.loads(serialize('json', receipts_list, fields=('receipts_name', 'receipts_date', 'total_price')))

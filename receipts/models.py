@@ -6,6 +6,8 @@ class Receipts(models.Model):
     total_price = models.IntegerField(default=0)
     raw_content = models.TextField()
     processed = models.BooleanField(default=False)
+    invalid = models.BooleanField(default=False)
+    fail_count = models.IntegerField(default=0)
 
 
 class Item(models.Model):

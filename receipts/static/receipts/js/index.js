@@ -81,6 +81,7 @@ function ($scope, $q, $http, $window) {
             var request = $window.gapi.client.gmail.users.messages.get({
                 'userId': 'me',
                 'id': results[i].id,
+                'format': 'full',
               });
               request.execute(function(response) {
               var html = response.payload.body.data;

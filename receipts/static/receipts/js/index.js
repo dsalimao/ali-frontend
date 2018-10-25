@@ -35,8 +35,8 @@ function ($scope, $q, $http, $window) {
            $window.gapi.auth.authorize({
              client_id: CLIENT_ID,
              scope: SCOPES,
-             immediate: false
-             fetch_basic_profile: true
+             immediate: false,
+             fetch_basic_profile: true,
            }, function(authResult) {
                 console.log(authResult);
                 if (authResult && !authResult.error) {

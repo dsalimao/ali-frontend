@@ -33,6 +33,7 @@ def pickup_endpoint(request):
 
     try:
         name, raw = parse_json()
+        print(raw)
     except Exception as e1:
         try:
             name, raw = parse_form()
@@ -41,7 +42,6 @@ def pickup_endpoint(request):
             print(e2)
 
     rdate = datetime.now()
-    print(raw)
     # r = Receipts(receipts_name=name, receipts_date=rdate, raw_content=raw)
     # r.save()
     # Always return an HttpResponseRedirect after successfully dealing

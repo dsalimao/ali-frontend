@@ -27,7 +27,7 @@ function ($scope, $q, $http, $window) {
     $scope.initGmailDataFetching = function() {
          var PROJECT_ID = '864443634019';
          var CLIENT_ID = '864443634019-hlqr4tvv33alp9i8t4ig7h1tf6bajl2l.apps.googleusercontent.com';
-         var API_KEY = 'AIzaSyCtPNydDlJTSOwXloDSW4ZMYpiqNcQJ8yc';
+         var API_KEY = 'AIzaSyDlQ-f2cHGO3NXBNIyNwexefzTb7-EShhw';
          var SCOPES = 'https://www.googleapis.com/auth/gmail.readonly';
            $window.gapi.client.setApiKey(API_KEY);
            $window.gapi.auth.authorize({

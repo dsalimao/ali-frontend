@@ -10,7 +10,7 @@ import base64
 import json
 
 def index(request):
-    latest_receipts_list = Receipts.objects.order_by('-receipts_date')[:5]
+    latest_receipts_list = Receipts.objects.order_by('-receipts_date')[:]
     context = {
         'latest_receipts_list': latest_receipts_list,
     }

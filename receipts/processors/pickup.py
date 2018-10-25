@@ -11,8 +11,6 @@ queue = Queue()
 
 def process_raw_content():
     r = queue.get()
-    print(r)
-    print(r.raw_content)
     if r.receipts_name.lower() == 'uber':
         uber(r)
     elif r.receipts_name.lower() == 'hmart':
@@ -64,6 +62,7 @@ def hmart(r):
 
     raw_content = r.raw_content.decode("unicode-escape")
     body = raw_content[raw_content.index("<!DOCTYPE html>"):]
+    print(body)
     soup = BeautifulSoup(body)
 
     # TODO: move specific path to a better place

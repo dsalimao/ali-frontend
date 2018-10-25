@@ -40,7 +40,7 @@ def uber(r):
     def to_price_int(x):
         return int(float(x.string.replace("$","")) * 100)
 
-    soup = BeautifulSoup(r.raw_content)
+    soup = BeautifulSoup(r.raw_content.decode('unicode_escape'))
     total_price = soup.table.tr.td.table.tr.td.table.tr.td.table.tr.td.table.tr.td.table.tr.td.table.tr.td.table.tr.td.\
         table.div.span.string
 
@@ -62,9 +62,9 @@ def hmart(r):
     def to_price_int(x):
         return int(float(x.string.replace("$","")) * 100)
 
-    print(r.raw_content)
-
-    soup = BeautifulSoup(r.raw_content)
+    raw_content = r.raw_content.decode("unicode-escape")
+    body = raw_content[raw_content.index("<!DOCTYPE html>"):]
+    soup = BeautifulSoup(body)
 
     # TODO: move specific path to a better place
     total_price = to_price_int(soup.table.table.table.thead.tr.td.string)

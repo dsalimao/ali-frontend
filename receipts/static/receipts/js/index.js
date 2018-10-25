@@ -30,7 +30,8 @@ function ($scope, $q, $http, $window) {
          var PROJECT_ID = '864443634019';
          var CLIENT_ID = '864443634019-hlqr4tvv33alp9i8t4ig7h1tf6bajl2l.apps.googleusercontent.com';
          var API_KEY = 'AIzaSyDlQ-f2cHGO3NXBNIyNwexefzTb7-EShhw';
-         var SCOPES = 'https://www.googleapis.com/auth/gmail.readonly';
+         var SCOPES = ['https://www.googleapis.com/auth/gmail.readonly',
+         'https://www.googleapis.com/auth/userinfo.email'];
            $window.gapi.client.setApiKey(API_KEY);
            $window.gapi.auth.authorize({
              client_id: CLIENT_ID,

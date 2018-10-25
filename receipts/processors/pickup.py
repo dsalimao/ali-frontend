@@ -60,8 +60,6 @@ def hmart(r):
     def to_price_int(x):
         return int(float(x.string.replace("$","")) * 100)
 
-
-
     soup = BeautifulSoup(r.raw_content)
 
     # TODO: move specific path to a better place
@@ -73,6 +71,7 @@ def hmart(r):
 
     r.processed = True
     r.total_price = total_price
+    print(total_price)
     update_processed_receipts(r, item_qtys, item_desc, item_price)
 
 

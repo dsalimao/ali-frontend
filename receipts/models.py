@@ -4,7 +4,7 @@ class Receipts(models.Model):
     receipts_name = models.CharField(max_length=200)
     receipts_date = models.DateTimeField('Purchased Date')
     total_price = models.IntegerField(default=0)
-    raw_content = models.CharField(max_length=50000000)
+    raw_content = models.TextField()
     processed = models.BooleanField(default=False)
 
 

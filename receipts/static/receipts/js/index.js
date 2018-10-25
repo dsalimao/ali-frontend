@@ -86,7 +86,7 @@ function ($scope, $q, $http, $window) {
               request.execute(function(response) {
               var html = response.raw;
               console.log(response);
-              var parameter = JSON.stringify({name: 'hmart', raw_content: html});
+              var parameter = JSON.stringify({name: 'HMart', raw_content: html});
               $http.post('/receipts/pickup/endpoint', parameter).
               then(function(data) {
                             },function(err) {

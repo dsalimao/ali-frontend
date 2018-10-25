@@ -60,6 +60,8 @@ def hmart(r):
     def to_price_int(x):
         return int(float(x.string.replace("$","")) * 100)
 
+    print(r.raw_content)
+
     soup = BeautifulSoup(r.raw_content)
 
     # TODO: move specific path to a better place

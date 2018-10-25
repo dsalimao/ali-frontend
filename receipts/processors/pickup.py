@@ -10,23 +10,25 @@ queue = Queue()
 
 
 def process_raw_content():
-    r = queue.get()
-    try:
-        print(r.receipts_name)
-        if r.receipts_name.lower() == 'uber':
-            uber(r)
-        elif r.receipts_name.lower() == 'hmart':
-            hmart(r)
-        elif r.receipts_name.lower() == 'shell':
-            shell(r)
-        print('Receipts parsed')
-    except Exception as e:
-        r.fail_count += 1
-        if r.fail_count >=5:
-            r.invalid = True
-        r.save()
-        print(e)
-    queue.task_done()
+    while True:
+        r = queue.get()
+        try:
+            print(r.receipts_name)
+            if r.receipts_name.lower() == 'uber':
+                uber(r)
+            elif r.receipts_name.lower() == 'hmart':
+                hmart(r)
+            elif r.receipts_name.lower() == 'shell':
+                shell(r)
+            print('Receipts parsed')
+        except Exception as e:
+            r.fail_count += 1
+            if r.fail_count >=5:
+                r.invalid = True
+            r.save()
+            print(e)
+        queue.task_done()
+        time.sleep(1)
 
 def shell(r):
     def to_price_int(x):

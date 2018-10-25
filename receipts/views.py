@@ -116,7 +116,7 @@ def get_last_sync(request):
     if sync:
         t = sync.time - timedelta(days=1)
         return JsonResponse({'payload': t.strftime("%Y/%m/%d")})
-    return '1970/01/01'
+    return JsonResponse({'payload': '1970/01/01'})
 
 
 def update_last_sync(request):

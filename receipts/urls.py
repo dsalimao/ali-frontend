@@ -16,7 +16,7 @@ urlpatterns = [
     # ex: /receipts/get_raw/5
     path('get_raw/<int:receipts_id>', views.get_raw, name='get_raw'),
     # ex: /receipts/get_last_sync/ali
-    path('get_last_sync/<str:user>', views.get_last_sync, name='get_last_sync'),
+    path('get_last_sync', views.get_last_sync, name='get_last_sync'),
     # ex: /receipts/get_last_sync/ali
     path('update_last_sync', views.update_last_sync, name='update_last_sync'),
     # ex: /receipts/

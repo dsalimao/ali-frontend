@@ -56,7 +56,8 @@ function ($scope, $q, $http, $window) {
     };
 
     $scope.syncReceipts = function(userEmail) {
-        $http.get('/receipts/get_last_sync/' + userEmail).
+        var parameter = JSON.stringify({user: userEmail});
+        $http.post('/receipts/get_last_sync', parameter).
             then(function(data) {
                 var query = 'from:receipts@hmart.com after:' + data.data.payload;
                 $scope.listMessages(query, $scope.getMessages, userEmail)

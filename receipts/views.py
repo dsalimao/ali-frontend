@@ -102,8 +102,14 @@ def get_raw(request, receipts_id):
     return JsonResponse({'payload': receipts.raw_content})
 
 
-def get_last_sync(request, user):
+def get_last_sync(request):
+    def parse_json():
+        received_json_data=json.loads(request.body.decode('utf-8'))
+        user = received_json_data['user']
+        return user
+
     try:
+        user = parse_json()
         sync = SyncInfo.objects.get(user=user)
     except SyncInfo.DoesNotExist:
         sync = None

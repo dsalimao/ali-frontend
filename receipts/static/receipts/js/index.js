@@ -37,7 +37,7 @@ function ($scope, $q, $http, $window) {
            }, function(authResult) {
                 var token = authResult['access_token'];
                 if (authResult && !authResult.error) {
-                    $scope.listGmail()
+                    $scope.syncReceipts();
                 } else {
                   console.log('Auth was not successful');
                 }

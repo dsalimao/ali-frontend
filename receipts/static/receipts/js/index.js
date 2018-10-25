@@ -45,15 +45,45 @@ function ($scope, $q, $http, $window) {
            );
     };
 
-    $scope.listGmail = function() {
-        $window.gapi.client.load('gmail', 'v1', function() {
-            var request =
-            $window.gapi.client.gmail.users.messages.list(
-            {userId: 'me', q: 'from:support@udacity.com'});
-            request.execute(function(response) {
-                console.log(response);
-            },function(err) {console.log(err);});
+    $scope.syncReceipts = function() {
+        var query = 'from:support@udacity.com';
+        $scope.listMessages(query, $scope.getMessages)
+    }
+
+    $scope.listMessages = function(query, callback) {
+      var getPageOfMessages = function(request, result) {
+        request.execute(function(resp) {
+          result = result.concat(resp.messages);
+          var nextPageToken = resp.nextPageToken;
+          if (nextPageToken) {
+            request = &window.gapi.client.gmail.users.messages.list({
+              'userId': 'me',
+              'pageToken': nextPageToken,
+              'q': query,
+            });
+            getPageOfMessages(request, result);
+          } else {
+            callback(result);
+          }
         });
+      };
+      var initialRequest = $window.gapi.client.gmail.users.messages.list({
+        'userId': 'me',
+        'q': query,
+      });
+      getPageOfMessages(initialRequest, []);
+    };
+
+    $scope.getMessages = function(results) {
+        for (var i=0;i<results.length;i++) {
+            var request = $window.gapi.client.gmail.users.messages.get({
+                'userId': 'me',
+                'id': results[i].id,
+              });
+              request.execute(function(response) {
+              console.log(response);
+              });
+        }
     }
 
     $scope.searchReceipts = function() {

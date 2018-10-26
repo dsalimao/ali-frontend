@@ -18,8 +18,8 @@ app.config(function($stateProvider, $locationProvider, $httpProvider, $mdTheming
 });
 
 
-app.controller("ReceiptsIndexCtrl", ['$scope', '$q', '$http', '$window',
-function ($scope, $q, $http, $window) {
+app.controller("ReceiptsIndexCtrl", ['$scope', '$q', '$http', '$window','$mdToast',
+function ($scope, $q, $http, $window, $mdToast) {
     $scope.latestReceipts = [];
     $scope.searchText = '';
     $scope.authed = false;
@@ -71,8 +71,9 @@ function ($scope, $q, $http, $window) {
     $scope.syncReceipts = function() {
         $http.get('/receipts/sync').
             then(function(data) {
+                $mdToast.showSimple('Sync success.');
               },function(err) {
-                console.log(err);
+                $mdToast.showSimple('Please login in first.');
               });
     }
 

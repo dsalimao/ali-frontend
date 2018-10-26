@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseServerError
 from .models import Receipts, Item
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
@@ -103,7 +103,7 @@ def get_raw(request, receipts_id):
 
 def sync(request):
     if 'google_user' not in request.session or request.session['google_user'] not in google_credentials:
-        return HttpResponseRedirect(reverse('oauth:start_oauth_flow'))
+        return HttpResponseServerError('Please login first')
 
     user = request.session['google_user']
     sync_processor.sync(user)

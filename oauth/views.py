@@ -14,7 +14,7 @@ flow = Flow.from_client_secrets_file(
 
 
 def get_user(request):
-    if 'google_user' in request.session:
+    if 'google_user' in request.session and request.session['google_user'] in google_credentials:
         return JsonResponse({'payload': request.session['google_user']})
     return JsonResponse({'payload': 'Please Login'})
 

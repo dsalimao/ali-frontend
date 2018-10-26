@@ -5,7 +5,7 @@ from queue import Queue
 import threading
 import time
 
-THREADS = 4
+THREADS = 10
 queue = Queue()
 
 
@@ -23,7 +23,7 @@ def process_raw_content():
             print('Receipts parsed')
         except Exception as e:
             r.fail_count += 1
-            if r.fail_count >=5:
+            if r.fail_count >=2:
                 r.invalid = True
             r.save()
             print(e)
@@ -32,11 +32,15 @@ def process_raw_content():
 
 def shell(r):
     def to_price_int(x):
-        return int(float(x.string.replace("$","")) * 100)
+        return int(float(x.string.replace("$","").replace("=2E",".")) * 100)
 
-    soup = BeautifulSoup(r.raw_content)
+    raw_content = r.raw_content
+    body = raw_content[raw_content.index("<!DOCTYPE HTML"):]
+
+    soup = BeautifulSoup(body)
 
     tds = soup.find_all(['td'])
+
     for i in range(len(tds)):
         if tds[i].string == 'TOTAL':
             p = to_price_int(tds[i+1].string)
@@ -49,7 +53,9 @@ def uber(r):
     def to_price_int(x):
         return int(float(x.string.replace("$","")) * 100)
 
-    soup = BeautifulSoup(r.raw_content.decode('unicode_escape'))
+    raw_content = r.raw_content
+    body = raw_content[raw_content.lower().index("<!doctype html>"):]
+    soup = BeautifulSoup(body)
     total_price = soup.table.tr.td.table.tr.td.table.tr.td.table.tr.td.table.tr.td.table.tr.td.table.tr.td.table.tr.td.\
         table.div.span.string
 
@@ -109,7 +115,7 @@ def fetch_all_unprocessed():
         unprocessed = Receipts.objects.filter(processed=False, invalid=False)
         for r in unprocessed:
             queue.put(r, block=True)
-        time.sleep(1)
+        time.sleep(30)
 
 
 def start_pickup():

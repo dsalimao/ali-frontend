@@ -1,20 +1,18 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from .models import Receipts, Item, SyncInfo
+from .models import Receipts, Item
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from _datetime import datetime, timedelta
+from _datetime import datetime
 from django.core.serializers import serialize
+from .processors import sync as sync_processor
+
 import base64
 
 import json
 
 def index(request):
-    latest_receipts_list = Receipts.objects.order_by('-receipts_date')
-    context = {
-        'latest_receipts_list': latest_receipts_list,
-    }
-    return render(request, 'receipts/receipts.html', context)
+    return render(request, 'receipts/receipts.html')
 
 def pickup(request):
     return render(request, 'receipts/pickup.html')
@@ -102,30 +100,9 @@ def get_raw(request, receipts_id):
     return JsonResponse({'payload': receipts.raw_content})
 
 
-def get_last_sync(request):
-    def parse_json():
-        received_json_data=json.loads(request.body.decode('utf-8'))
-        user = received_json_data['user']
-        return user
-
-    try:
-        user = parse_json()
-        sync = SyncInfo.objects.get(user=user)
-    except SyncInfo.DoesNotExist:
-        sync = None
-    if sync:
-        t = sync.time - timedelta(days=1)
-        return JsonResponse({'payload': t.strftime("%Y/%m/%d")})
-    return JsonResponse({'payload': '1970/01/01'})
+def sync(request):
+    user = 'wangff9@gmail.com'
+    sync_processor.sync(user)
+    return HttpResponse('Success')
 
 
-def update_last_sync(request):
-    def parse_json():
-        received_json_data=json.loads(request.body.decode('utf-8'))
-        user = received_json_data['user']
-        time = received_json_data['time']
-        return user, time
-
-    user, time = parse_json()
-    SyncInfo.objects.update_or_create(user=user, time=datetime.strptime(time, '%Y/%m/%d'))
-    return HttpResponseRedirect(reverse('receipts:pickup'))

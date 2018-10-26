@@ -26,93 +26,6 @@ function ($scope, $q, $http, $window) {
     $scope.pageSize = 1000000;
     $scope.pageNow = 0;
 
-    $scope.initGmailDataFetching = function() {
-         var PROJECT_ID = '864443634019';
-         var CLIENT_ID = '864443634019-hlqr4tvv33alp9i8t4ig7h1tf6bajl2l.apps.googleusercontent.com';
-         var API_KEY = 'AIzaSyDlQ-f2cHGO3NXBNIyNwexefzTb7-EShhw';
-         var SCOPES = 'https://www.googleapis.com/auth/gmail.readonly';
-           $window.gapi.client.setApiKey(API_KEY);
-           $window.gapi.auth.authorize({
-             client_id: CLIENT_ID,
-             scope: SCOPES,
-             immediate: false,
-             fetch_basic_profile: true,
-           }, function(authResult) {
-                console.log(authResult);
-                if (authResult && !authResult.error) {
-                    var url1 = 'https://www.googleapis.com/plus/v1/people/me?access_token=' + authResult.access_token;
-                    $http.get(url1).
-                        then(function(data) {
-                            var userEmail = data.data.emails[0].value;
-                            $scope.syncReceipts(userEmail);
-                          },function(err) {
-                            console.log(err);
-                          });
-                } else {
-                  console.log('Auth was not successful');
-                }
-              }
-           );
-    };
-
-    $scope.syncReceipts = function(userEmail) {
-        var parameter = JSON.stringify({user: userEmail});
-        $http.post('/receipts/get_last_sync', parameter).
-            then(function(data) {
-                var query = 'from:receipts@hmart.com after:' + data.data.payload;
-                $scope.listMessages(query, $scope.getMessages, userEmail)
-              },function(err) {
-                console.log(err);
-              });
-
-    }
-
-    $scope.listMessages = function(query, callback, userEmail) {
-      var getPageOfMessages = function(request, result) {
-            request.execute(function(resp) {
-                      result = result.concat(resp.messages);
-                      var nextPageToken = resp.nextPageToken;
-                      if (nextPageToken) {
-                        request = $window.gapi.client.gmail.users.messages.list({
-                          'userId': 'me',
-                          'pageToken': nextPageToken,
-                          'q': query,
-                        });
-                        getPageOfMessages(request, result);
-                      } else {
-                        callback(result, userEmail);
-                      }
-                    });
-      };
-      $window.gapi.client.load('gmail', 'v1', function() {
-      var initialRequest = $window.gapi.client.gmail.users.messages.list({
-        'userId': 'me',
-        'q': query,
-      });
-      getPageOfMessages(initialRequest, []);
-      });
-    };
-
-    $scope.getMessages = function(results, userEmail) {
-        for (var i=0;i<results.length;i++) {
-            var request = $window.gapi.client.gmail.users.messages.get({
-                'userId': 'me',
-                'id': results[i].id,
-                'format': 'raw',
-              });
-              request.execute(function(response) {
-              var html = response.raw;
-              console.log(response);
-              var parameter = JSON.stringify({name: 'HMart', raw_content: html, user: userEmail});
-              $http.post('/receipts/pickup/endpoint', parameter).
-              then(function(data) {
-                            },function(err) {
-                              console.log(err);
-                            });
-              });
-        }
-    }
-
     $scope.searchReceipts = function() {
         var tod1 = new Date();
         if ($scope.toDate) {
@@ -153,6 +66,14 @@ function ($scope, $q, $http, $window) {
                 console.log(err);
               });
     };
+
+    $scope.syncReceipts = function() {
+        $http.get('/receipts/sync').
+            then(function(data) {
+              },function(err) {
+                console.log(err);
+              });
+    }
 
     $scope.searchReceipts();
 }]);

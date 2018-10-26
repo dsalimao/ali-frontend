@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from _datetime import datetime
 from django.core.serializers import serialize
 from .processors import sync as sync_processor
+from oauth.credentials import google_credentials
 
 import base64
 
@@ -101,7 +102,10 @@ def get_raw(request, receipts_id):
 
 
 def sync(request):
-    user = 'wangff9@gmail.com'
+    if 'google_user' not in request.session or request.session['google_user'] not in google_credentials:
+        return HttpResponseRedirect(reverse('oauth:start_oauth_flow'))
+
+    user = request.session['google_user']
     sync_processor.sync(user)
     return HttpResponse('Success')
 

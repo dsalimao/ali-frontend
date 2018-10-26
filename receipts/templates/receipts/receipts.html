@@ -18,14 +18,16 @@
 </head>
 <body md-theme="aliTheme">
     <md-content>
-        <md-toolbar class="md-hue-2">
+        <md-toolbar class="md-hue-2" ng-controller="HeaderCtrl">
             <div class="md-toolbar-tools">
                 <md-button class="md-icon-button" aria-label="Menu">
                     <md-icon md-svg-icon="{% static 'receipts/icon/menu.svg' %}"></md-icon>
                 </md-button>
 
                 <h2 flex md-truncate>Receipts App</h2>
-                <!--<div class="g-signin2" data-onsuccess="onSignIn"></div>-->
+                {% verbatim %}
+                <md-button class="md-raised md-hue-2" ng-click="login()">{{curUser}}</md-button>
+                {% endverbatim %}
             </div>
         </md-toolbar>
     </md-content>
@@ -33,5 +35,6 @@
         <div ui-view >Loading...</div>
     </div>
     <script src="{% static 'receipts/js/index.js' %}?{% cache_bust %}"></script>
+    <script src="{% static 'receipts/js/header.js' %}?{% cache_bust %}"></script>
 </body>
 </html>

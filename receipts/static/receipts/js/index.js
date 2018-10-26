@@ -26,6 +26,7 @@ function ($scope, $q, $http, $window) {
     $scope.pageSize = 1000000;
     $scope.pageNow = 0;
 
+
     $scope.searchReceipts = function() {
         var tod1 = new Date();
         if ($scope.toDate) {

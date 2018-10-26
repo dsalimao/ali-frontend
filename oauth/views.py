@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from alifrontend import settings
 from .credentials import google_credentials
 
@@ -12,22 +12,27 @@ flow = Flow.from_client_secrets_file(
             'https://www.googleapis.com/auth/gmail.readonly'],
     redirect_uri='http://localhost:8000/oauth/oauth_return')
 
+
+def get_user(request):
+    if 'google_user' in request.session:
+        return JsonResponse({'payload': request.session['google_user']})
+    return JsonResponse({'payload': ''})
+
+
 def start_oauth_flow(request):
     auth_url, _ = flow.authorization_url(prompt='consent')
-    return redirect(auth_url)
+    response = redirect(auth_url)
+    return response
 
 
 def oauth_return(request):
     code = request.GET['code']
-    user = request.user
-    print(user)
-
     flow.fetch_token(code=code)
 
-    # You can use flow.credentials, or you can just get a requests session
-    # using flow.authorized_session.
     session = flow.authorized_session()
     userinfo = session.get('https://www.googleapis.com/userinfo/v2/me').json()
     user_email = userinfo['email']
     google_credentials[user_email] = flow.credentials
+    request.session['google_user'] = user_email
+
     return HttpResponseRedirect(reverse('receipts:index'))

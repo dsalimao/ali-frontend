@@ -9,6 +9,7 @@ admin.autodiscover()
 app_name = 'oauth'
 
 urlpatterns = [
+    path('get_user', views.get_user, name='get_user'),
     path('start_oauth_flow', views.start_oauth_flow, name='start_oauth_flow'),
     re_path(r'^oauth_return', views.oauth_return, name='oauth_return'),
 ]

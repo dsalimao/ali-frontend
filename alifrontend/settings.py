@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'oauth.apps.OauthConfig',
     'receipts.apps.ReceiptsConfig',
+    'menu.apps.MenuConfig',
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',

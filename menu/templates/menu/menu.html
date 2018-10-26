@@ -1,0 +1,21 @@
+<md-sidenav
+            class="md-sidenav-left"
+            md-component-id="left"
+            md-is-locked-open="$mdMedia('gt-md')"
+            md-whiteframe="3">
+
+    <md-toolbar class="md-hue-2">
+        <h1 class="md-toolbar-tools">Menu</h1>
+    </md-toolbar>
+    <md-content layout-padding ng-controller="LeftCtrl" layout="column">
+        <md-button class="md-primary" ng-click="goReceipts()" hide-gt-md>
+            Purchase Receipts
+        </md-button>
+        <md-button class="md-primary" hide-gt-md>
+            My Cook Recipe
+        </md-button>
+        <md-button class="md-primary" ng-click="goNotebook()" hide-gt-md>
+            Jupyter Notebook
+        </md-button>
+    </md-content>
+</md-sidenav>

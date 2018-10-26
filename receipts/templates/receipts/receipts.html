@@ -20,7 +20,7 @@
     <md-content>
         <md-toolbar class="md-hue-2" ng-controller="HeaderCtrl">
             <div class="md-toolbar-tools">
-                <md-button class="md-icon-button" aria-label="Menu">
+                <md-button class="md-icon-button" aria-label="Menu" ng-click="toggleMenu()" ng-controller="MenuCtrl">
                     <md-icon md-svg-icon="{% static 'receipts/icon/menu.svg' %}"></md-icon>
                 </md-button>
 
@@ -31,10 +31,18 @@
             </div>
         </md-toolbar>
     </md-content>
-    <div class="container content">
-        <div ui-view >Loading...</div>
-    </div>
+    <section layout="row" flex>
+        {% include 'menu/menu.html' %}
+
+        <md-content flex layout-padding>
+        <div class="container content">
+            <div ui-view >Loading...</div>
+        </div>
+        </md-content>
+    </section>
+
     <script src="{% static 'receipts/js/index.js' %}?{% cache_bust %}"></script>
     <script src="{% static 'receipts/js/header.js' %}?{% cache_bust %}"></script>
+    <script src="{% static 'menu/js/menu.js' %}?{% cache_bust %}"></script>
 </body>
 </html>

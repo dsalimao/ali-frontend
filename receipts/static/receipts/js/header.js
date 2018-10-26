@@ -10,6 +10,7 @@ function ($scope, $q, $http, $window) {
     $scope.getUser = function() {
         $http.get('/oauth/get_user').
             then(function(data) {
+            console.log(data.data.payload);
                 $scope.curUser = data.data.payload;
               },function(err) {
                 console.log(err);
@@ -17,8 +18,13 @@ function ($scope, $q, $http, $window) {
     }
 
     $scope.login = function() {
-        console.log(1111);
-        $http.get('/oauth/start_oauth_flow');
+        $http.get('/oauth/start_oauth_flow')
+            .then(function(data) {
+                 $window.location.replace(data.data.payload);
+               },function(err) {
+                 console.log(err);
+               });;
     }
 
+    $scope.getUser();
 }]);

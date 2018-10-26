@@ -108,7 +108,7 @@ def fetch_all_unprocessed():
     while True:
         unprocessed = Receipts.objects.filter(processed=False, invalid=False)
         for r in unprocessed:
-            queue.put_nowait(r)
+            queue.put(r, block=True)
         time.sleep(1)
 
 

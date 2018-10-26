@@ -16,13 +16,12 @@ flow = Flow.from_client_secrets_file(
 def get_user(request):
     if 'google_user' in request.session:
         return JsonResponse({'payload': request.session['google_user']})
-    return JsonResponse({'payload': ''})
+    return JsonResponse({'payload': 'Please Login'})
 
 
 def start_oauth_flow(request):
     auth_url, _ = flow.authorization_url(prompt='consent')
-    response = redirect(auth_url)
-    return response
+    return JsonResponse({'payload': auth_url})
 
 
 def oauth_return(request):

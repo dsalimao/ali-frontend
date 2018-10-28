@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'oauth.apps.OauthConfig',
     'receipts.apps.ReceiptsConfig',
     'menu.apps.MenuConfig',
+    'about.apps.AboutConfig',
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',

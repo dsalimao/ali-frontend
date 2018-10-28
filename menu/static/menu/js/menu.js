@@ -40,4 +40,10 @@ app.controller('MenuCtrl', function ($scope, $timeout, $mdSidenav, $log) {
        $scope.goReceipts = function () {
          $window.location.replace('/receipts');
        };
+       $scope.goAboutAli = function () {
+            $window.location.replace('/about/ali');
+          };
+       $scope.goAboutMe = function () {
+            $window.location.replace('/about/me');
+          };
      });

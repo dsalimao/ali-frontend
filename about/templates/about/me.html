@@ -1,0 +1,41 @@
+{% load i18n %}
+{% load static %}
+{% load cache_bust %}
+{% csrf_token %}
+<html ng-app="AboutApp">
+    <head>
+        <meta charset="utf-8">
+        <base href="/about">
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.20/angular-ui-router.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css"/>
+    </head>
+    <body md-theme="aliTheme">
+        <md-content>
+            <md-toolbar class="md-hue-2">
+                <div class="md-toolbar-tools">
+                    <md-button class="md-icon-button" aria-label="Menu" ng-click="toggleMenu()" ng-controller="MenuCtrl">
+                        <md-icon md-svg-icon="{% static 'about/icon/menu.svg' %}"></md-icon>
+                    </md-button>
+
+                    <h2 flex md-truncate>About Ali</h2>
+                </div>
+            </md-toolbar>
+        </md-content>
+        <section layout="row" flex layout-align="center center">
+            {% include 'menu/menu.html' %}
+            <md-content class="md-padding" layout-xs="column" layout="row" layout-align="center center">
+                <div style="max-width: 800px;p.letters {word-wrap: break-word;}">
+                    <h1>Hi, I'm Elva.</h1>
+                    <p>TODO: add self introduction</p>
+                </div>
+            </md-content>
+        </section>
+        <script src="{% static 'about/js/about.js' %}?{% cache_bust %}"></script>
+        <script src="{% static 'menu/js/menu.js' %}?{% cache_bust %}"></script>
+    </body>
+</html>

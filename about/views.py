@@ -8,4 +8,4 @@ def about_ali(request):
 
 
 def about_me(request):
-    pass
+    return render(request, 'about/me.html')

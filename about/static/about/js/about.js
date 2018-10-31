@@ -12,6 +12,6 @@ app.config(function($locationProvider, $httpProvider, $mdThemingProvider) {
 
 app.controller('AliCtrl', function ($scope) {
    $scope.albums = [{name:'Ali1',desc:'3 month', link:'https://photos.app.goo.gl/hiYEb8ecrVfb1dgV7',
-   img:''},
+   img:'/static/about/img/ali01.JPG'},
    {name:'Ali2',desc:'Ali in DC', link:'https://photos.app.goo.gl/bbrhK3zYpeDXJEKy8',img:''}];
 });

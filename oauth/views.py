@@ -10,7 +10,7 @@ flow = Flow.from_client_secrets_file(
     settings.GOOGLE_OAUTH2_CLIENT_SECRETS_JSON,
     scopes=['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email',
             'https://www.googleapis.com/auth/gmail.readonly'],
-    redirect_uri='http://localhost:8000/oauth/oauth_return')
+    redirect_uri='http://www.datascientistali.com/oauth/oauth_return')
 
 
 def get_user(request):

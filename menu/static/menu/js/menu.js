@@ -35,15 +35,15 @@ app.controller('MenuCtrl', function ($scope, $timeout, $mdSidenav, $log) {
      })
      .controller('LeftCtrl', function ($scope, $timeout, $mdSidenav, $log, $window) {
        $scope.goNotebook = function () {
-         $window.location.replace('/notebook');
+         $window.location.replace('/notebook/');
        };
        $scope.goReceipts = function () {
-         $window.location.replace('/receipts');
+         $window.location.replace('/receipts/');
        };
        $scope.goAboutAli = function () {
-            $window.location.replace('/about/ali');
+            $window.location.replace('/about/ali/');
           };
        $scope.goAboutMe = function () {
-            $window.location.replace('/about/me');
+            $window.location.replace('/about/me/');
           };
      });
